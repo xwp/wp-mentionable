@@ -1,0 +1,35 @@
+/**
+ * Handle the css for the autocomplete dropdown
+ *
+ * @author X-Team <x-team.com>
+ * @author Jonathan Bardo <jonathan.bardo@x-team.com>
+ */
+ul.mentionable-autocomplete{
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border: 1px solid #aaa;
+	-webkit-box-shadow: 0 4px 5px rgba(0,0,0,.15);
+	-moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
+	-o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
+	box-shadow        : 0 4px 5px rgba(0,0,0,.15);
+	line-height: 18px;
+	cursor: default;
+	padding: 0;
+	margin: -24px 0 0;
+	list-style: none;
+	z-index: 1000000;
+}
+
+ul.mentionable-autocomplete > li:hover,
+ul.mentionable-autocomplete > li[data-selected=true]{
+	background: #3875d7;
+	color: #fff;
+}
+
+ul.mentionable-autocomplete > li{
+	background: #fff;
+	line-height: 80%;
+	padding: 7px 7px 8px;
+}

@@ -24,6 +24,11 @@ class Test_Mentionable extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		$this->plugin = $GLOBALS['mentionable'];
+
+		// We need to change user to verify editing option as admin or editor
+		$administrator_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		update_user_option( $administrator_id, 'rich_editing', 'true' );
+		wp_set_current_user( $administrator_id );
 	}
 
 	/**
@@ -64,7 +69,7 @@ class Test_Mentionable extends WP_UnitTestCase {
 	public function test_define_constants() {
 		$this->assertTrue( defined( 'MENTIONABLE_DIR' ), 'MENTIONABLE_DIR is not defined' );
 		$this->assertTrue( defined( 'MENTIONABLE_INCLUDES_DIR' ), 'MENTIONABLE_INCLUDES_DIR is not defined' );
-		$this->assertTrue( defined( 'MENTIONABLE_MENTION_URL' ), 'MENTIONABLE_MENTION_URL is not defined' );
+		$this->assertTrue( defined( 'MENTIONABLE_URL' ), 'MENTIONABLE_MENTION_URL is not defined' );
 	}
 
 	/**
@@ -90,6 +95,8 @@ class Test_Mentionable extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_admin_init() {
+		do_action( 'admin_init' );
+
 		$this->assertEquals( 'true', get_user_option( 'rich_editing' ), 'Current user must have rich_editing option on to use this plugin' );
 
 		$this->assertGreaterThan( 0, has_filter( 'mce_external_plugins', array( $this->plugin, 'register_tmce_plugin' ), 'mce_external_plugins must be defined for the plugin to load' ) );
@@ -104,7 +111,10 @@ class Test_Mentionable extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_admin_enqueue_scripts() {
+		set_current_screen( 'edit.php' );
 		do_action( 'admin_enqueue_scripts' );
+
+		// Check the css is being enqueued
 		$this->assertTrue( wp_style_is( 'mentionable_css', 'enqueued' ), 'The required css is not enqueued' );
 		// Test that the nonce is registered with wp_localize_script so the js can use it for ajax
 		$localize_data = $GLOBALS['wp_scripts']->get_data( 'jquery-core', 'data' );
@@ -120,7 +130,7 @@ class Test_Mentionable extends WP_UnitTestCase {
 	public function test_register_tmce_plugin() {
 		$filter_output = apply_filters( 'mce_external_plugins', array() );
 		$this->assertArrayHasKey( 'mentionable', $filter_output );
-		$this->assertEquals( $filter_output['mentionable'], GRAMMYS_MENTION_URL . '/js/mentionable-tmce.js' );
+		$this->assertEquals( $filter_output['mentionable'], MENTIONABLE_URL . '/js/mentionable-tmce.js' );
 	}
 
 	/**
@@ -130,7 +140,7 @@ class Test_Mentionable extends WP_UnitTestCase {
 	 */
 	public function test_filter_mce_css() {
 		$filter_output = apply_filters( 'mce_css', '' );
-		$this->assertTrue( strrpos( $filter_output, GRAMMYS_MENTION_URL . '/css/mentionable-tmce-style.css' ) >= 0 );
+		$this->assertTrue( strrpos( $filter_output, MENTIONABLE_URL . '/css/mentionable-tmce-style.css' ) >= 0 );
 	}
 
 }

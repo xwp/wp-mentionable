@@ -228,6 +228,7 @@ class Mentionable {
 		}
 
 		return isset( $current_post_type ) ? $current_post_type : null;
+	}
 
 
 	/**

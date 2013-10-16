@@ -16,6 +16,16 @@ Mention WordPress content with inline autocomplete inside tinyMCE.
 
 [![Build Status](https://travis-ci.org/x-team/wp-mentionable.png)](https://travis-ci.org/x-team/wp-mentionable)
 
+## Screenshots ##
+
+### Start typing "@" for the autocomplete to trigger
+
+![Start typing "@" for the autocomplete to trigger](assets/screenshot-1.png)
+
+### After pressing enter, the plugin replace your input with the right link and content
+
+![After pressing enter, the plugin replace your input with the right link and content](assets/screenshot-2.png)
+
 ## Changelog ##
 
 ### 0.1 ###

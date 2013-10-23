@@ -1,5 +1,5 @@
 === Mentionable ===
-Contributors:      X-Team, jonathanbardo
+Contributors:      X-team, jonathanbardo
 Tags:              tinyMCE, admin, mention
 Requires at least: 3.6
 Tested up to:      3.7

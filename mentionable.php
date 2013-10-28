@@ -102,7 +102,6 @@ class Mentionable {
 		}
 
 		// Filter content on post save
-		//add_action( 'save_post', array( $this, 'update_mention_meta' ) );
 		add_filter( 'content_save_pre', array( $this, 'update_mention_meta' ), 10, 1 );
 
 	}
@@ -246,19 +245,35 @@ class Mentionable {
 
 		global $post;
 
-		$dom = new DOMDocument();
-		$dom->loadHTML($content);
-		$data_mentionables = $dom->getElementsByTagName('a');
-
-
-// heavy debugging
-		foreach ($data_mentionables as $data_mentionable) {
-			print stripslashes(str_replace('"','',$data_mentionable->getAttribute('data-mentionable')));
-		}
-
-exit();
+		$mentioned_ids = self::parse_content( $content );
 
 		return $content;
+
+	}
+
+	/**
+	 * Parses $content looking for the ids of links with data-mentionable in them
+	 *
+	 * @since 0.1.0
+	 * @access private
+	 *
+	 * @return array
+	 */
+	private function parse_content( $content ) {
+
+		$mentioned_ids = array();
+
+		$dom = new DOMDocument();
+		$dom->loadHTML( $content );
+		$data_mentionables = $dom->getElementsByTagName( 'a' );
+
+
+		foreach ( $data_mentionables as $data_mentionable ) {
+			$id = stripslashes( str_replace( '"' , '' , $data_mentionable->getAttribute( 'data-mentionable' ) ) );
+			$mentioned_ids[$id] = true;
+		}
+
+		return $mentioned_ids;
 
 	}
 

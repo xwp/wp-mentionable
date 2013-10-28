@@ -101,6 +101,10 @@ class Mentionable {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		}
 
+		// Filter content on post save
+		//add_action( 'save_post', array( $this, 'update_mention_meta' ) );
+		add_filter( 'content_save_pre', array( $this, 'update_mention_meta' ), 10, 1 );
+
 	}
 
 	/**
@@ -230,6 +234,33 @@ class Mentionable {
 		return isset( $current_post_type ) ? $current_post_type : null;
 	}
 
+	/**
+	 * Updates meta for both current and mentioned posts
+	 *
+	 * @since 0.1.0
+	 * @access private
+	 *
+	 * @return string
+	 */
+	public function update_mention_meta( $content ) {
+
+		global $post;
+
+		$dom = new DOMDocument();
+		$dom->loadHTML($content);
+		$data_mentionables = $dom->getElementsByTagName('a');
+
+
+// heavy debugging
+		foreach ($data_mentionables as $data_mentionable) {
+			print stripslashes(str_replace('"','',$data_mentionable->getAttribute('data-mentionable')));
+		}
+
+exit();
+
+		return $content;
+
+	}
 
 	/**
 	 * $options getter

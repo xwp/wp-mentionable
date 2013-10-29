@@ -4,7 +4,7 @@
  * Plugin URI: http://x-team.com
  * Description:
  * Version: 0.1.0
- * Author: X-Team, Jonathan Bardo
+ * Author: X-Team, Jonathan Bardo, Topher
  * Author URI: http://x-team.com/wordpress/
  * License: GPLv2+
  * Text Domain: mentionable

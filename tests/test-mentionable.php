@@ -53,6 +53,8 @@ class Test_Mentionable extends WP_UnitTestCase {
 
 		$this->assertGreaterThan( 0, has_action( 'admin_init', array( $this->plugin, 'admin_init' ) ), 'init action is not defined or has the wrong priority' );
 
+		$this->assertGreaterThan( 0, has_action( 'save_post', array( $this->plugin, 'update_mention_meta' ) ), 'save_post action is not defined or has the wrong priority' );
+
 		$this->assertGreaterThan( 0, has_filter( 'mce_css', array( $this->plugin, 'filter_mce_css' ) ), 'filter_mce_css action is not defined or has the wrong priority' );
 
 		$this->assertGreaterThan( 0, has_action( 'admin_enqueue_scripts', array( $this->plugin, 'admin_enqueue_scripts' ) ), 'admin_enqueue_scripts action is not defined or has the wrong priority' );

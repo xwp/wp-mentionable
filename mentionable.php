@@ -102,7 +102,7 @@ class Mentionable {
 		}
 
 		// Filter content on post save
-		add_filter( 'content_save_pre', array( $this, 'update_mention_meta' ), 10, 1 );
+		add_action( 'save_post', array( $this, 'update_mention_meta' ), 99, 1 );
 
 	}
 
@@ -234,20 +234,54 @@ class Mentionable {
 	}
 
 	/**
-	 * Updates meta for both current and mentioned posts
+	 * Updates meta for current post
 	 *
 	 * @since 0.1.0
 	 * @access private
 	 *
-	 * @return string
+	 * @return null
 	 */
-	public function update_mention_meta( $content ) {
+	public function update_mention_meta() {
 
 		global $post;
 
-		$mentioned_ids = self::parse_content( $content );
+		if ( is_object( $post ) && ( !wp_is_post_revision( $post->ID ) )  ) {
 
-		return $content;
+// DEBUG CODE
+print '<pre>';
+print_r($post);
+print_r(get_post_custom($post->ID));
+print '</pre>';
+exit();
+
+			// go get the post ids mentioned in this post
+			$mentioned_ids = self::get_mentioned_ids( $post->post_content );
+
+			// stash them in post meta
+			update_post_meta( $post->ID, 'mentions', $mentioned_ids );
+
+
+		}
+
+	}
+
+	/**
+	 * Updates meta for mentioned posts
+	 *
+	 * @since 0.1.0
+	 * @access private
+	 *
+	 * @return null
+	 */
+	public function update_mentioned_by_meta() {
+
+		global $post;
+
+		// go get the post ids mentioned in this post
+		$mentioned_ids = self::parse_content( $post->post_content );
+
+		// stash them in post meta
+		update_post_meta( $post->ID, 'mentions', $mentioned_ids );
 
 	}
 
@@ -259,18 +293,26 @@ class Mentionable {
 	 *
 	 * @return array
 	 */
-	private function parse_content( $content ) {
+	private function get_mentioned_ids( $content ) {
 
+		// set up array
 		$mentioned_ids = array();
 
+		// instantiate the DOM browser and get all the 'a' tags
 		$dom = new DOMDocument();
 		$dom->loadHTML( $content );
 		$data_mentionables = $dom->getElementsByTagName( 'a' );
 
 
 		foreach ( $data_mentionables as $data_mentionable ) {
+
+			// clean up the results a little bit
 			$id = stripslashes( str_replace( '"' , '' , $data_mentionable->getAttribute( 'data-mentionable' ) ) );
-			$mentioned_ids[$id] = true;
+
+			// make sure we're getting an actual post ID, then pack into output var
+			if( is_numeric( $id ) )
+				$mentioned_ids[$id] = true;
+
 		}
 
 		return $mentioned_ids;

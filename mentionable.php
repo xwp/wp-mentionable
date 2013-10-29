@@ -241,36 +241,27 @@ class Mentionable {
 	 *
 	 * @return null
 	 */
-	public function update_mention_meta() {
+	public function update_mention_meta( $post_id ) {
 
-		global $post;
+		if ( wp_is_post_revision( $post_id ) )
+			return
 
-		if ( is_object( $post ) && ( !wp_is_post_revision( $post->ID ) )  ) {
+		$post = get_post( $post_id );
 
+		// go get the post ids mentioned in this post
+		$mentioned_ids = $this->get_mentioned_ids( $post->post_content );
 
-			// go get the post ids mentioned in this post
-			$mentioned_ids = self::get_mentioned_ids( $post->post_content );
+		// stash them in post meta
+		update_post_meta( $post_id, 'mentions', $mentioned_ids );
 
-			// stash them in post meta
-			update_post_meta( $post->ID, 'mentions', $mentioned_ids );
+		foreach ( $mentioned_ids as $mention => $mention_data ) {
 
-			foreach ( $mentioned_ids as $mention => $mention_data ) {
+			$stack = get_post_meta( $mention, 'mentioned_by' );
 
-				$stack = get_post_meta($mention,'mentioned_by');
+			if ( $post->ID != $mention)
+				$stack[0][$post_id] = $mention_data;
 
-				if( $post->ID != $mention)
-					$stack[0][$post->ID] = $mention_data;
-
-				update_post_meta( $mention, 'mentioned_by', $stack[0] );
-
-			}
-
-// DEBUG CODE
-//print '<pre>';
-//print_r(get_post_meta($post->ID,'mentioned_by'));
-//print '</pre>';
-//exit();
-
+			update_post_meta( $mention, 'mentioned_by', $stack[0] );
 
 		}
 
@@ -318,11 +309,13 @@ class Mentionable {
 		foreach ( $data_mentionables as $data_mentionable ) {
 
 			// clean up the results a little bit
-			$id = stripslashes( str_replace( '"' , '' , $data_mentionable->getAttribute( 'data-mentionable' ) ) );
+			$post_id = absint( stripslashes( str_replace( '"' , '' , $data_mentionable->getAttribute( 'data-mentionable' ) ) ) );
+
+			$post_object = get_post( $post_id );
 
 			// make sure we're getting an actual post ID, then pack into output var
-			if( is_numeric( $id ) )
-				$mentioned_ids[$id] = true;
+			if ( $post_object )
+				$mentioned_ids[ $post_id ] = true;
 
 		}
 

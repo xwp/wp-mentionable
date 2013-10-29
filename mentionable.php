@@ -277,12 +277,11 @@ class Mentionable {
 	 */
 	private function get_mentioned_ids( $content ) {
 
+		// set up array
+		$mentioned_ids = array();
 
 		if ( empty( $content ) )
 			return $mentioned_ids;
-
-		// set up array
-		$mentioned_ids = array();
 
 		// instantiate the DOM browser and get all the 'a' tags
 		$dom = new DOMDocument();

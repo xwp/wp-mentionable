@@ -102,7 +102,7 @@ class Mentionable {
 		}
 
 		// Filter content on post save
-		add_action( 'post_updated', array( $this, 'update_mention_meta' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'update_mention_meta' ), 10, 3 );
 
 	}
 

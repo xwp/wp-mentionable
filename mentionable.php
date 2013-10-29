@@ -102,7 +102,7 @@ class Mentionable {
 		}
 
 		// Filter content on post save
-		add_action( 'save_post', array( $this, 'update_mention_meta' ), 10, 1 );
+		add_action( 'post_updated', array( $this, 'update_mention_meta' ), 10, 3 );
 
 	}
 
@@ -241,9 +241,9 @@ class Mentionable {
 	 *
 	 * @return null
 	 */
-	public function update_mention_meta( $post_id ) {
+	public function update_mention_meta( $post_id, $post, $update ) {
 
-		if ( wp_is_post_revision( $post_id ) )
+		if ( wp_is_post_revision( $post_id ) || ! $update)
 			return
 
 		$post = get_post( $post_id );
@@ -276,6 +276,10 @@ class Mentionable {
 	 * @return array
 	 */
 	private function get_mentioned_ids( $content ) {
+
+
+		if ( empty( $content ) )
+			return $mentioned_ids;
 
 		// set up array
 		$mentioned_ids = array();

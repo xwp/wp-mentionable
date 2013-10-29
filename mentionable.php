@@ -268,26 +268,6 @@ class Mentionable {
 	}
 
 	/**
-	 * Updates meta for mentioned posts
-	 *
-	 * @since 0.1.0
-	 * @access private
-	 *
-	 * @return null
-	 */
-	public function update_mentioned_by_meta() {
-
-		global $post;
-
-		// go get the post ids mentioned in this post
-		$mentioned_ids = self::parse_content( $post->post_content );
-
-		// stash them in post meta
-		update_post_meta( $post->ID, 'mentions', $mentioned_ids );
-
-	}
-
-	/**
 	 * Parses $content looking for the ids of links with data-mentionable in them
 	 *
 	 * @since 0.1.0

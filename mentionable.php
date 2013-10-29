@@ -102,7 +102,7 @@ class Mentionable {
 		}
 
 		// Filter content on post save
-		add_action( 'save_post', array( $this, 'update_mention_meta' ), 99, 1 );
+		add_action( 'save_post', array( $this, 'update_mention_meta' ), 10, 1 );
 
 	}
 
@@ -247,18 +247,29 @@ class Mentionable {
 
 		if ( is_object( $post ) && ( !wp_is_post_revision( $post->ID ) )  ) {
 
-// DEBUG CODE
-print '<pre>';
-print_r($post);
-print_r(get_post_custom($post->ID));
-print '</pre>';
-exit();
 
 			// go get the post ids mentioned in this post
 			$mentioned_ids = self::get_mentioned_ids( $post->post_content );
 
 			// stash them in post meta
 			update_post_meta( $post->ID, 'mentions', $mentioned_ids );
+
+			foreach ( $mentioned_ids as $mention => $mention_data ) {
+
+				$stack = get_post_meta($mention,'mentioned_by');
+
+				if( $post->ID != $mention)
+					$stack[0][$post->ID] = $mention_data;
+
+				update_post_meta( $mention, 'mentioned_by', $stack[0] );
+
+			}
+
+// DEBUG CODE
+//print '<pre>';
+//print_r(get_post_meta($post->ID,'mentioned_by'));
+//print '</pre>';
+//exit();
 
 
 		}

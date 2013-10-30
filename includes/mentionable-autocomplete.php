@@ -24,7 +24,7 @@ class Mentionable_Autocomplete {
 		add_filter( 'posts_where', array( $this, 'posts_where_like_title' ), 10, 2 );
 
 		$query_args = array( 
-			'post_type'       => Mentionable::get_option( 'autocomplete_post_types' ),
+			'post_type'       => Mentionable_Settings::$options['autocomplete_post_types'],
 			'post_title_like' => $_REQUEST['mentionable_word'],
 			'fields'          => 'ids',
 			'posts_per_page'  => 5,

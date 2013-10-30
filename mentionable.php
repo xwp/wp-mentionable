@@ -48,6 +48,14 @@ class Mentionable {
 	public $autocomplete;
 
 	/**
+	 * Poset meta component class
+	 *
+	 * @var object
+	 * @access public
+	 */
+	public $mentionable_post_meta;
+
+	/**
 	 * Current admin post_type
 	 *
 	 * @var string
@@ -84,7 +92,7 @@ class Mentionable {
 		self::$options = apply_filters( 'mentionable_options', self::$options );
 
 		// Set constans needed by the plugin.
-		add_action( 'init', array( $this, 'define_constants' ), 1 );
+		add_action( 'plugins_loaded', array( $this, 'define_constants' ), 1 );
 
 		// Internationalize the text strings used.
 		add_action( 'plugins_loaded', array( $this, 'i18n' ), 2 );
@@ -103,10 +111,10 @@ class Mentionable {
 
 		// get the class that manages post meta
 		require_once( dirname( __FILE__ ) . '/includes/mentionable-postmetas.php' );
-		$mentionable_post_meta = new Mentionable_Postmetas;
+		$this->mentionable_post_meta = new Mentionable_Postmetas;
 
 		// Filter content on post save
-		add_action( 'save_post', array( $mentionable_post_meta, 'update_mention_meta' ), 10, 3 );
+		add_action( 'save_post', array( $this->mentionable_post_meta, 'update_mention_meta' ), 10, 3 );
 
 	}
 

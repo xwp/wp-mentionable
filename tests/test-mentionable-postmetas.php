@@ -32,7 +32,8 @@ class Test_Mentionable_Postmetas extends WP_UnitTestCase {
 	}
 
 	public function test_constructor() {
-		//@todo
+		$this->assertEquals( 10, has_action( 'save_post', array( $this->plugin->mentionable_postmetas, 'update_mention_meta' ) ), 'update_mention_meta action is not defined or has the wrong priority' );
+		$this->assertEquals( 10, has_action( 'pre_post_update', array( $this->plugin->mentionable_postmetas, 'remove_post_meta' ) ), 'remove_post_meta action is not defined or has the wrong priority' );
 	}
 
 }

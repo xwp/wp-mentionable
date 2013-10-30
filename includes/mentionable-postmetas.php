@@ -22,6 +22,7 @@ class Mentionable_Postmetas {
 	public function __construct(){
 		// Filter content on post save
 		add_action( 'save_post', array( $this, 'update_mention_meta' ), 10, 3 );
+		add_action( 'pre_post_update', array( $this, 'remove_post_meta' ), 10, 2 );
 	}
 
 	/**
@@ -61,6 +62,46 @@ class Mentionable_Postmetas {
 		}
 
 	}
+
+	/**
+	 * Removes ids from post meta on posts UNmentioned
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param $post_id
+	 * @param $data
+	 *
+	 * @return null
+	 */
+	public function remove_post_meta( $post_id, $data ) {
+
+		// get the version of the post from before this update
+		$old_version = get_post( $post_id );
+
+		// get the menttioned IDs from before the latest update
+		$old_mentioned_ids = $this->get_mentioned_ids( $old_version->post_content );
+
+		// get the mentioned IDs from the latest update
+		$new_mentioned_ids = $this->get_mentioned_ids( $data['post_content'] );
+
+		// figure out which IDs have been deleted
+		$difference_ids = array_diff_key( $old_mentioned_ids, $new_mentioned_ids );
+
+		// loop through the deleted IDs and unset them
+		foreach ( $difference_ids as $post_id => $value ) {
+
+			$stack = get_post_meta( $post_id, 'mentioned_by' );
+
+			unset($stack[0][$old_version->ID]);
+
+		}
+
+		// update the post meta to remove IDs
+		update_post_meta( $post_id, 'mentioned_by', $stack[0] );
+
+	}
+
 
 	/**
 	 * Parses $content looking for the ids of links with data-mentionable in them

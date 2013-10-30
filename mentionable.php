@@ -84,7 +84,7 @@ class Mentionable {
 		self::$options = apply_filters( 'mentionable_options', self::$options );
 
 		// Set constans needed by the plugin.
-		add_action( 'plugins_loaded', array( $this, 'define_constants' ), 1 );
+		add_action( 'init', array( $this, 'define_constants' ), 1 );
 
 		// Internationalize the text strings used.
 		add_action( 'plugins_loaded', array( $this, 'i18n' ), 2 );
@@ -101,9 +101,17 @@ class Mentionable {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		}
 
-		// Filter content on post save
-		add_action( 'save_post', array( $this, 'update_mention_meta' ), 10, 3 );
+		// get the class that manages post meta
+		require_once( dirname( __FILE__ ) . '/includes/mentionable-postmetas.php' );
+		$mentionable_post_meta = new Mentionable_Postmetas;
 
+		// Filter content on post save
+		add_action( 'save_post', array( $mentionable_post_meta, 'update_mention_meta' ), 10, 3 );
+
+	}
+
+
+	private function require_postmeta_file() {
 	}
 
 	/**
@@ -231,79 +239,6 @@ class Mentionable {
 		}
 
 		return isset( $current_post_type ) ? $current_post_type : null;
-	}
-
-	/**
-	 * Updates meta for current post
-	 *
-	 * @since 0.1.0
-	 * @access private
-	 *
-	 * @return null
-	 */
-	public function update_mention_meta( $post_id, $post, $update ) {
-
-		if ( wp_is_post_revision( $post_id ) || ! $update)
-			return
-
-		$post = get_post( $post_id );
-
-		// go get the post ids mentioned in this post
-		$mentioned_ids = $this->get_mentioned_ids( $post->post_content );
-
-		// stash them in post meta
-		update_post_meta( $post_id, 'mentions', $mentioned_ids );
-
-		foreach ( $mentioned_ids as $mention => $mention_data ) {
-
-			$stack = get_post_meta( $mention, 'mentioned_by' );
-
-			if ( $post->ID != $mention)
-				$stack[0][$post_id] = $mention_data;
-
-			update_post_meta( $mention, 'mentioned_by', $stack[0] );
-
-		}
-
-	}
-
-	/**
-	 * Parses $content looking for the ids of links with data-mentionable in them
-	 *
-	 * @since 0.1.0
-	 * @access private
-	 *
-	 * @return array
-	 */
-	private function get_mentioned_ids( $content ) {
-
-		// set up array
-		$mentioned_ids = array();
-
-		if ( empty( $content ) )
-			return $mentioned_ids;
-
-		// instantiate the DOM browser and get all the 'a' tags
-		$dom = new DOMDocument();
-		$dom->loadHTML( $content );
-		$data_mentionables = $dom->getElementsByTagName( 'a' );
-
-
-		foreach ( $data_mentionables as $data_mentionable ) {
-
-			// clean up the results a little bit
-			$post_id = absint( stripslashes( str_replace( '"' , '' , $data_mentionable->getAttribute( 'data-mentionable' ) ) ) );
-
-			$post_object = get_post( $post_id );
-
-			// make sure we're getting an actual post ID, then pack into output var
-			if ( $post_object )
-				$mentioned_ids[ $post_id ] = true;
-
-		}
-
-		return $mentioned_ids;
-
 	}
 
 	/**

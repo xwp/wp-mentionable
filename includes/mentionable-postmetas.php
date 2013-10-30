@@ -22,6 +22,40 @@
 
 class Mentionable_Postmetas {
 
+	/**
+	 * Updates meta for current post
+	 *
+	 * @since 0.1.0
+	 * @access private
+	 *
+	 * @return null
+	 */
+	public function update_mention_meta( $post_id, $post, $update ) {
+
+		if ( wp_is_post_revision( $post_id ) || ! $update)
+			return
+
+		$post = get_post( $post_id );
+
+		// go get the post ids mentioned in this post
+		$mentioned_ids = $this->get_mentioned_ids( $post->post_content );
+
+		// stash them in post meta
+		update_post_meta( $post_id, 'mentions', $mentioned_ids );
+
+		foreach ( $mentioned_ids as $mention => $mention_data ) {
+
+			$stack = get_post_meta( $mention, 'mentioned_by' );
+
+			if ( $post->ID != $mention)
+				$stack[0][$post_id] = $mention_data;
+
+			update_post_meta( $mention, 'mentioned_by', $stack[0] );
+
+		}
+
+	}
+
 
 	/**
 	 * Parses $content looking for the ids of links with data-mentionable in them
@@ -46,6 +80,9 @@ class Mentionable_Postmetas {
 
 
 		foreach ( $data_mentionables as $data_mentionable ) {
+
+			if ( ! $data_mentionable->hasAttribute( 'data-mentionable' ) )
+				continue;
 
 			// clean up the results a little bit
 			$post_id = absint( stripslashes( str_replace( '"' , '' , $data_mentionable->getAttribute( 'data-mentionable' ) ) ) );

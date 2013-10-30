@@ -20,10 +20,10 @@ class Mentionable_Settings {
 
 	public function __construct() {
 		// Register settings page
-		add_action( 'admin_menu', array( $this, 'register_menu') );
+		add_action( 'admin_menu', array( $this, 'register_menu' ) );
 
 		// Register settings, and fields
-		add_action( 'admin_init', array($this, 'register_settings') );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
 		$defaults = array(
 			'post_types'              => array( 'post' ),
@@ -162,5 +162,3 @@ class Mentionable_Settings {
 	}
 
 }
-
-new Mentionable_Settings;

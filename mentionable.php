@@ -56,6 +56,12 @@ class Mentionable {
 	public static $current_post_type;
 
 	/**
+	 * Settings instance
+	 * @var Mentionable_Settings
+	 */
+	public static $settings;
+
+	/**
 	 * Constructor | Add required hooks
 	 *
 	 * @access public
@@ -120,6 +126,7 @@ class Mentionable {
 	public function load_settings() {
 		// Register settings
 		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-settings.php' );
+		self::$settings = new Mentionable_Settings;
 	}
 
 

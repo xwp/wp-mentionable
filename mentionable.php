@@ -53,7 +53,7 @@ class Mentionable {
 	 * @var object
 	 * @access public
 	 */
-	public $mentionable_post_meta;
+	public $mentionable_postmetas;
 
 	/**
 	 * Current admin post_type
@@ -97,29 +97,8 @@ class Mentionable {
 		// Internationalize the text strings used.
 		add_action( 'plugins_loaded', array( $this, 'i18n' ), 2 );
 
-		// Register tmce plugin -- because pluggable.php is loaded after plugin
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
-
-		// Enqueue admin script
-		if ( in_array( self::$current_post_type, self::$options['post_types'] ) ) {
-			// Filter tinymce css to add custom
-			add_filter( 'mce_css', array( $this, 'filter_mce_css' ) );
-
-			// Enqueue admin script
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		}
-
-		// get the class that manages post meta
-		require_once( dirname( __FILE__ ) . '/includes/mentionable-postmetas.php' );
-		$this->mentionable_post_meta = new Mentionable_Postmetas;
-
-		// Filter content on post save
-		add_action( 'save_post', array( $this->mentionable_post_meta, 'update_mention_meta' ), 10, 3 );
-
-	}
-
-
-	private function require_postmeta_file() {
+		// Setup all dependent class
+		add_action( 'plugins_loaded', array( $this, 'setup' ), 3 );
 	}
 
 	/**
@@ -153,6 +132,30 @@ class Mentionable {
 		load_plugin_textdomain( 'mentionable', false, 'mentionable/languages' );
 	}
 
+	/**
+	 * Setup all classes needed for the plugin
+	 *
+	 * @access public
+	 * @action plugins_loaded
+	 * @return void
+	 */
+	public function setup() {
+		// Register tmce plugin -- because pluggable.php is loaded after plugin
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
+
+		// Enqueue admin script
+		if ( in_array( self::$current_post_type, self::$options['post_types'] ) ) {
+			// Filter tinymce css to add custom
+			add_filter( 'mce_css', array( $this, 'filter_mce_css' ) );
+
+			// Enqueue admin script
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		}
+
+		// Require postmetas class
+		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-postmetas.php' );
+		$this->mentionable_postmetas = new Mentionable_Postmetas;
+	}
 
 	/**
 	 * Add the required action and filter after init hook
@@ -174,7 +177,6 @@ class Mentionable {
 		// Add ajax handler for autocomplete action
 		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-autocomplete.php' );
 		$this->autocomplete = new Mentionable_Autocomplete();
-		add_action( 'wp_ajax_get_mentionable', array( $this->autocomplete, 'handle_ajax' ) );
 	}
 
 	/**

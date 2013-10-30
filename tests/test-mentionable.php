@@ -53,9 +53,6 @@ class Test_Mentionable extends WP_UnitTestCase {
 
 		$this->assertGreaterThan( 0, has_action( 'admin_init', array( $this->plugin, 'admin_init' ) ), 'init action is not defined or has the wrong priority' );
 
-		$this->assertGreaterThan( 0, has_filter( 'mce_css', array( $this->plugin, 'filter_mce_css' ) ), 'filter_mce_css action is not defined or has the wrong priority' );
-
-		$this->assertGreaterThan( 0, has_action( 'admin_enqueue_scripts', array( $this->plugin, 'admin_enqueue_scripts' ) ), 'admin_enqueue_scripts action is not defined or has the wrong priority' );
 	}
 
 
@@ -101,6 +98,9 @@ class Test_Mentionable extends WP_UnitTestCase {
 
 		$this->assertGreaterThan( 0, has_filter( 'mce_external_plugins', array( $this->plugin, 'register_tmce_plugin' ), 'mce_external_plugins must be defined for the plugin to load' ) );
 		$this->assertGreaterThan( 0, has_action( 'wp_ajax_get_mentionable', array( $this->plugin->autocomplete, 'handle_ajax' ) ), 'handle_ajax function must be defined for the plugin to work' );
+
+		$this->assertGreaterThan( 0, has_filter( 'mce_css', array( $this->plugin, 'filter_mce_css' ) ), 'filter_mce_css action is not defined or has the wrong priority' );
+		$this->assertGreaterThan( 0, has_action( 'admin_enqueue_scripts', array( $this->plugin, 'admin_enqueue_scripts' ) ), 'admin_enqueue_scripts action is not defined or has the wrong priority' );
 	}
 
 	/**

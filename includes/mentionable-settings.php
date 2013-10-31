@@ -33,7 +33,7 @@ class Mentionable_Settings {
 		$defaults = array(
 			'post_types'              => array( 'post' ),
 			'autocomplete_post_types' => array( 'post' ),
-			);
+		);
 
 		self::$options = apply_filters(
 			'mentionable_options',

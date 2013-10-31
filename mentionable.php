@@ -4,7 +4,7 @@
  * Plugin URI: http://x-team.com
  * Description:
  * Version: 0.1.0
- * Author: X-Team, Jonathan Bardo
+ * Author: X-Team, Jonathan Bardo, Topher
  * Author URI: http://x-team.com/wordpress/
  * License: GPLv2+
  * Text Domain: mentionable
@@ -42,10 +42,26 @@ class Mentionable {
 	/**
 	 * Autocomplete component class
 	 *
-	 * @var object
+	 * @var Mentionable_Autocomplete
 	 * @access public
 	 */
 	public $autocomplete;
+
+	/**
+	 * Poset meta component class
+	 *
+	 * @var Mentionable_Postmetas
+	 * @access public
+	 */
+	public $mentionable_postmetas;
+
+	/**
+	 * Settings instance
+	 *
+	 * @var Mentionable_Settings
+	 * @access public
+	 */
+	public $settings;
 
 	/**
 	 * Current admin post_type
@@ -54,12 +70,6 @@ class Mentionable {
 	 * @access public
 	 */
 	public static $current_post_type;
-
-	/**
-	 * Settings instance
-	 * @var Mentionable_Settings
-	 */
-	public static $settings;
 
 	/**
 	 * Constructor | Add required hooks
@@ -78,14 +88,11 @@ class Mentionable {
 		// Set constans needed by the plugin.
 		add_action( 'plugins_loaded', array( $this, 'define_constants' ), 1 );
 
-		// Load options
-		add_action( 'plugins_loaded', array( $this, 'load_settings' ), 1 );
-
 		// Internationalize the text strings used.
 		add_action( 'plugins_loaded', array( $this, 'i18n' ), 2 );
 
-		// Register tmce plugin -- because pluggable.php is loaded after plugin
-		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		// Setup all dependent class
+		add_action( 'plugins_loaded', array( $this, 'setup' ), 3 );
 	}
 
 	/**
@@ -120,15 +127,32 @@ class Mentionable {
 	}
 
 	/**
-	 * Loads settings
+	 * Setup all classes needed for the plugin
+	 *
+	 * @access public
+	 * @action plugins_loaded
 	 * @return void
 	 */
-	public function load_settings() {
+	public function setup() {
 		// Register settings
 		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-settings.php' );
-		self::$settings = new Mentionable_Settings;
-	}
+		$this->settings = new Mentionable_Settings;
 
+		// Register tmce plugin -- because pluggable.php is loaded after plugin
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
+
+		if ( in_array( self::$current_post_type, Mentionable_Settings::$options['post_types'] ) ) {
+			// Filter tinymce css to add custom
+			add_filter( 'mce_css', array( $this, 'filter_mce_css' ) );
+
+			// Enqueue admin script
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		}
+
+		// Intanciate postmetas class
+		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-postmetas.php' );
+		$this->mentionable_postmetas = new Mentionable_Postmetas;
+	}
 
 	/**
 	 * Add the required action and filter after init hook
@@ -147,19 +171,9 @@ class Mentionable {
 			add_filter( 'mce_external_plugins',  array( $this, 'register_tmce_plugin' ) );
 		}
 
-		if ( in_array( self::$current_post_type, Mentionable_Settings::$options['post_types'] ) ) {
-			// Filter tinymce css to add custom
-			add_filter( 'mce_css', array( $this, 'filter_mce_css' ) );
-
-			// Enqueue admin script
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		}
-
 		// Add ajax handler for autocomplete action
 		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-autocomplete.php' );
 		$this->autocomplete = new Mentionable_Autocomplete();
-		add_action( 'wp_ajax_get_mentionable', array( $this->autocomplete, 'handle_ajax' ) );
-
 	}
 
 	/**

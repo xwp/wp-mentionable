@@ -48,11 +48,9 @@ class Test_Mentionable extends WP_UnitTestCase {
 
 	public function test_contructor() {
 		$this->assertEquals( 1, has_action( 'plugins_loaded', array( $this->plugin, 'define_constants' ) ), 'define_constants action is not defined or has the wrong priority' );
-
 		$this->assertEquals( 2, has_action( 'plugins_loaded', array( $this->plugin, 'i18n' ) ), 'i18n action is not defined or has the wrong priority' );
 
-		$this->assertGreaterThan( 0, has_action( 'admin_init', array( $this->plugin, 'admin_init' ) ), 'init action is not defined or has the wrong priority' );
-
+		$this->assertEquals( 3, has_action( 'plugins_loaded', array( $this->plugin, 'setup' ) ), 'The setup function is not called' );
 	}
 
 
@@ -85,6 +83,25 @@ class Test_Mentionable extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Check if all dependent class are loaded
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function test_setup() {
+		$this->assertGreaterThan( 0, has_action( 'admin_init', array( $this->plugin, 'admin_init' ) ), 'init action is not defined or has the wrong priority' );
+		$this->assertGreaterThan( 0, has_filter( 'mce_css', array( $this->plugin, 'filter_mce_css' ) ), 'filter_mce_css action is not defined or has the wrong priority' );
+		$this->assertGreaterThan( 0, has_action( 'admin_enqueue_scripts', array( $this->plugin, 'admin_enqueue_scripts' ) ), 'admin_enqueue_scripts action is not defined or has the wrong priority' );
+
+		require_once( MENTIONABLE_INCLUDES_DIR . '/mentionable-settings.php' );
+		$this->settings = new Mentionable_Settings;
+
+		require_once( MENTIONABLE_INCLUDES_DIR . '/mentionable-postmetas.php' );
+		$this->assertInstanceOf( 'Mentionable_Settings', $this->plugin->settings );
+	}
+
+	/**
 	 * Test init action
 	 *
 	 * @since 0.1.0
@@ -95,12 +112,10 @@ class Test_Mentionable extends WP_UnitTestCase {
 		do_action( 'admin_init' );
 
 		$this->assertEquals( 'true', get_user_option( 'rich_editing' ), 'Current user must have rich_editing option on to use this plugin' );
-
 		$this->assertGreaterThan( 0, has_filter( 'mce_external_plugins', array( $this->plugin, 'register_tmce_plugin' ), 'mce_external_plugins must be defined for the plugin to load' ) );
-		$this->assertGreaterThan( 0, has_action( 'wp_ajax_get_mentionable', array( $this->plugin->autocomplete, 'handle_ajax' ) ), 'handle_ajax function must be defined for the plugin to work' );
 
-		$this->assertGreaterThan( 0, has_filter( 'mce_css', array( $this->plugin, 'filter_mce_css' ) ), 'filter_mce_css action is not defined or has the wrong priority' );
-		$this->assertGreaterThan( 0, has_action( 'admin_enqueue_scripts', array( $this->plugin, 'admin_enqueue_scripts' ) ), 'admin_enqueue_scripts action is not defined or has the wrong priority' );
+		require_once( MENTIONABLE_INCLUDES_DIR . '/mentionable-autocomplete.php' );
+		$this->assertInstanceOf( 'Mentionable_Autocomplete', $this->plugin->autocomplete );
 	}
 
 	/**

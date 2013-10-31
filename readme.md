@@ -3,10 +3,10 @@
 
 Mention WordPress content with inline autocomplete inside tinyMCE.
 
-**Contributors:** [x-team](http://profiles.wordpress.org/x-team), [jonathanbardo](http://profiles.wordpress.org/jonathanbardo)  
+**Contributors:** [x-team](http://profiles.wordpress.org/x-team), [jonathanbardo](http://profiles.wordpress.org/jonathanbardo), [topher1kenobe](http://profiles.wordpress.org/topher1kenobe), [shadyvb](http://profiles.wordpress.org/shadyvb)  
 **Tags:** [tinyMCE](http://wordpress.org/plugins/tags/tinyMCE), [admin](http://wordpress.org/plugins/tags/admin), [mention](http://wordpress.org/plugins/tags/mention)  
 **Requires at least:** 3.6  
-**Tested up to:** 3.7  
+**Tested up to:** 3.7.1  
 **Stable tag:** trunk (master)  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
 

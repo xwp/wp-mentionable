@@ -1,8 +1,8 @@
 === Mentionable ===
-Contributors:      X-team, jonathanbardo
+Contributors:      X-team, jonathanbardo, topher1kenobe, shadyvb
 Tags:              tinyMCE, admin, mention
 Requires at least: 3.6
-Tested up to:      3.7
+Tested up to:      3.7.1
 Stable tag:        trunk
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html

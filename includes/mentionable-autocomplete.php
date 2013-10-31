@@ -9,6 +9,15 @@
 class Mentionable_Autocomplete {
 
 	/**
+	 * Class constructor
+	 *
+	 * @return \Mentionable_Autocomplete
+	 */
+	public function __construct(){
+		add_action( 'wp_ajax_get_mentionable', array( $this, 'handle_ajax' ) );
+	}
+
+	/**
 	 * Handle the aucomplete ajax request
 	 *
 	 * @return json

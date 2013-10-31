@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Settings class
  *
- * @author  Shady Sharaf <shady@x-team.com>
+ * @author X-Team <x-team.com
+ * @author Shady Sharaf <shady@x-team.com>
  */
 class Mentionable_Settings {
 
@@ -18,6 +18,11 @@ class Mentionable_Settings {
 	 */
 	public static $options = array();
 
+	/**
+	 * Public constructor
+	 *
+	 * @return \Mentionable_Settings
+	 */
 	public function __construct() {
 		// Register settings page
 		add_action( 'admin_menu', array( $this, 'register_menu' ) );
@@ -35,8 +40,8 @@ class Mentionable_Settings {
 			wp_parse_args(
 				(array) get_option( self::KEY, array() ),
 				$defaults
-				)
-			);
+			)
+		);
 	}
 
 	/**
@@ -51,9 +56,9 @@ class Mentionable_Settings {
 				__( 'Mentionable', 'mentionable' ),
 				__( 'Mentionable', 'mentionable' ),
 				'manage_options',
-				'mentionable',
+				self::KEY,
 				array( $this, 'settings_page' )
-				);
+			);
 		}
 	}
 
@@ -83,43 +88,56 @@ class Mentionable_Settings {
 	 * @return void
 	 */
 	public function register_settings() {
+		$section_name = 'post_types';
+
 		register_setting( self::KEY, self::KEY );
 
 		add_settings_section(
-			'post_types', 
+			$section_name,
 			__( 'Post Types', 'mentionable' ),
 			'__return_false',
 			self::KEY
-			);
+		);
 
 		add_settings_field(
 			'post_types',
 			__( 'Activate for', 'mentionable' ),
-			array( $this, 'field_post_types' ),
+			array( $this, 'output_field_post_types' ),
 			self::KEY,
-			'post_types'
-			);
+			$section_name,
+			array(
+				'value'       => self::$options[ 'post_types' ],
+				'description' => __( 'Post types which this plugin will be activated for.', 'mentionable' ),
+			)
+		);
 
 		add_settings_field(
 			'autocomplete_post_types',
 			__( 'Autocomplete from', 'mentionable' ),
-			array( $this, 'field_autocomplete_post_types' ),
+			array( $this, 'output_field_post_types' ),
 			self::KEY,
-			'post_types'
-			);
+			$section_name,
+			array(
+				'value'          => self::$options[ 'autocomplete_post_types' ],
+				'description' => __( 'Post types that auto-completion will match against.', 'mentionable' ),
+			)
+		);
 	}
 
 	/**
 	 * Render Callback for post_types field
+	 *
+	 * @param $args
+	 *
 	 * @return void
 	 */
-	public function field_post_types() {
+	public function output_field_post_types( $args ) {
 		global $wp_post_types;
 		$slugs = array_keys( $wp_post_types );
 		$names = wp_list_pluck( $wp_post_types, 'label' );
 		$types = array_combine( $slugs, $names );
 		$types = array_diff_key( $types, array_flip( array( 'nav_menu_item', 'revision' ) ) );
-		$value = self::$options['post_types'];
+		$value = $args[ 'value' ];
 
 		$output = '<select name="mentionable[post_types][]" multiple >';
 		foreach ( $types as $slug => $name ) {
@@ -129,34 +147,8 @@ class Mentionable_Settings {
 
 		$output .= sprintf(
 			'<p class="description">%s</p>',
-			__( 'Post types which this plugin will be activated for.', 'mentionable' )
-			);
-
-		echo balanceTags( $output );
-	}
-
-	/**
-	 * Render Callback for autocomplete_post_types
-	 * @return void
-	 */
-	public function field_autocomplete_post_types() {
-		global $wp_post_types;
-		$slugs = array_keys( $wp_post_types );
-		$names = wp_list_pluck( $wp_post_types, 'label' );
-		$types = array_combine( $slugs, $names );
-		$types = array_diff_key( $types, array_flip( array( 'nav_menu_item', 'revision' ) ) );
-		$value = self::$options['autocomplete_post_types'];
-
-		$output = '<select name="mentionable[autocomplete_post_types][]" multiple >';
-		foreach ( $types as $slug => $name ) {
-			$output .= sprintf( '<option value="%1$s" %3$s>%2$s</option>', $slug, $name, selected( in_array( $slug, $value ), true, false ) );
-		}
-		$output .= '</select>';
-
-		$output .= sprintf(
-			'<p class="description">%s</p>',
-			__( 'Post types that auto-completion will match against.', 'mentionable' )
-			);
+			$args[ 'description' ]
+		);
 
 		echo balanceTags( $output );
 	}

@@ -1,0 +1,57 @@
+# Translation file for mentionable plugin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2013-11-04 14:34-0500\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../includes/mentionable-settings.php:56
+#: ../includes/mentionable-settings.php:57
+msgid "Mentionable"
+msgstr "Mentionable"
+
+#: ../includes/mentionable-settings.php:73
+msgid "Mentionable Options"
+msgstr "Mentionable | Option du plugin"
+
+#: ../includes/mentionable-settings.php:97
+msgid "Post Types"
+msgstr "Type de contenu"
+
+#: ../includes/mentionable-settings.php:104
+msgid "Activate for"
+msgstr "Activé pour"
+
+#: ../includes/mentionable-settings.php:110
+msgid "Post types which this plugin will be activated for."
+msgstr "Type de contenu pour dans lequel ce plugin sera actif."
+
+#: ../includes/mentionable-settings.php:116
+msgid "Autocomplete from"
+msgstr "Saisi semi-automatique de"
+
+#: ../includes/mentionable-settings.php:122
+msgid "Post types that auto-completion will match against."
+msgstr "Type de contenu que l'auto-complétion va considérer."
+
+#: ../tests/test-mentionable.php:81
+msgid "test"
+msgstr "test"

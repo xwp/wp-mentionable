@@ -33,3 +33,7 @@ ul.mentionable-autocomplete > li{
 	line-height: 80%;
 	padding: 7px 7px 8px;
 }
+
+ul.mentionable-autocomplete li, dd{
+	margin-bottom: 0;
+}

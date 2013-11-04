@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Mentionable
  * Plugin URI: http://x-team.com
- * Description:
+ * Description: Mention WordPress content with inline autocomplete inside tinyMCE.
  * Version: 0.1.0
  * Author: X-Team, Jonathan Bardo, Topher
  * Author URI: http://x-team.com/wordpress/
@@ -123,7 +123,7 @@ class Mentionable {
 	 */
 	public function i18n() {
 		// Load the translation of the plugin
-		load_plugin_textdomain( 'mentionable', false, 'mentionable/languages' );
+		load_plugin_textdomain( 'mentionable', false,  dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**

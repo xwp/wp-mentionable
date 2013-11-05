@@ -50,7 +50,7 @@ class Mentionable_Content {
 	 */
 	public function handle_replacement( $matches ) {
 		// Get the id of the post
-		$id = absint( $matches[1] );
+		$id   = absint( $matches[1] );
 		$post = get_post( $id );
 
 		if ( is_null( $post ) )

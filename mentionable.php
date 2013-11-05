@@ -48,12 +48,20 @@ class Mentionable {
 	public $autocomplete;
 
 	/**
-	 * Poset meta component class
+	 * Content component class
+	 *
+	 * @var Mentionable_Content
+	 * @access public
+	 */
+	public $content;
+
+	/**
+	 * Post metas component class
 	 *
 	 * @var Mentionable_Postmetas
 	 * @access public
 	 */
-	public $mentionable_postmetas;
+	public $postmetas;
 
 	/**
 	 * Settings instance
@@ -92,7 +100,7 @@ class Mentionable {
 		add_action( 'plugins_loaded', array( $this, 'i18n' ), 2 );
 
 		// Setup all dependent class
-		add_action( 'plugins_loaded', array( $this, 'setup' ), 3 );
+		add_action( 'after_setup_theme', array( $this, 'setup' ), 3 );
 	}
 
 	/**
@@ -151,7 +159,11 @@ class Mentionable {
 
 		// Intanciate postmetas class
 		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-postmetas.php' );
-		$this->mentionable_postmetas = new Mentionable_Postmetas;
+		$this->postmetas = new Mentionable_Postmetas;
+
+		// Instanciate content class
+		require_once( MENTIONABLE_INCLUDES_DIR . '/' . self::$class_name . '-content.php' );
+		$this->content = new Mentionable_Content;
 	}
 
 	/**

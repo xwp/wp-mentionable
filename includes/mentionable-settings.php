@@ -163,7 +163,7 @@ class Mentionable_Settings {
 		$types = array_diff_key( $types, array_flip( array( 'nav_menu_item', 'revision' ) ) );
 		$value = self::$options[ $args['key'] ];
 
-		$output = '<select name="mentionable[' . $args['key'] . '][]" multiple >';
+		$output = sprintf( '<select name="mentionable[%s][]" multiple >', esc_attr( $args['key'] ) );
 		foreach ( $types as $slug => $name ) {
 			$output .= sprintf( '<option value="%1$s" %3$s>%2$s</option>', $slug, $name, selected( in_array( $slug, $value ), true, false ) );
 		}
@@ -177,10 +177,15 @@ class Mentionable_Settings {
 		echo balanceTags( $output );
 	}
 
+	/**
+	 * Ouput an option checkbox
+	 *
+	 * @param array $args
+	 *
+	 * @return string $output
+	 */
 	public function output_checkbox( $args ) {
-		$selected = ( self::$options[ $args['key'] ] == 'on') ? 'checked':'';
-
-		$output = '<input type="checkbox" class="regular-text" name="mentionable[' . $args['key'] . ']"' . $selected . '>';
+		$output = sprintf( '<input type="checkbox" name="mentionable[%s]" %s>', esc_attr( $args['key'] ), checked( self::$options[ $args['key'] ] ,'on', false ) );
 
 		$output .= sprintf(
 			'<p class="description">%s</p>',

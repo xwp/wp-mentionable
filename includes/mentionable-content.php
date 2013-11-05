@@ -34,9 +34,8 @@ class Mentionable_Content {
 	 * @return string $content
 	 */
 	public function the_content( $content ){
-
-		if ( 'on' === Mentionable_Settings::$options['load_template'] )
-			$content = preg_replace_callback( '#<a .+? data-mentionable="([^"].*?)">([^<].*?)</a>#', array( $this, 'handle_replacement' ), $content );
+		if ( 'on' === Mentionable_Settings::$options['load_template'] && apply_filters( 'mentionable_load_template', '__return_true' ) )
+			$content = preg_replace_callback( '#<a\b[^>]*?\sdata-mentionable="([^"]*?)"[^>]*?>([^<]*?)</a>#', array( $this, 'handle_replacement' ), $content );
 
 		return $content;
 	}
@@ -49,16 +48,22 @@ class Mentionable_Content {
 	 * @return string
 	 */
 	public function handle_replacement( $matches ) {
-		// Get the id of the post
-		$id   = absint( $matches[1] );
-		$post = get_post( $id );
+		global $post;
 
-		if ( is_null( $post ) )
+		// Get the id of the post
+		$id           = absint( $matches[1] );
+		$host_post    = $post;
+		$mention_post = get_post( $id );
+
+		if ( is_null( $mention_post ) )
 			return $matches[2];
 
 		// Assign the content of the tag so template can use it
-		/** @noinspection PhpUndefinedFieldInspection */
+		$post = $mention_post;
+		// Reference to mentionable tag content if needed by template
 		$post->mentionable_tag_content = $matches[2];
+		//Reference to the host post if needed by template
+		$post->mentionable_host_post = $host_post;
 
 		// Create array of template
 		$templates = array();
@@ -75,19 +80,20 @@ class Mentionable_Content {
 
 		// If we didn't find any template, fall back to the one from this plugin
 		if ( '' === $template_location )
-			$template_location = MENTIONABLE_DIR . 'templates/' .self::TEMPLATE_NAME . '.php';
+			$template_location = MENTIONABLE_DIR . 'templates/' . self::TEMPLATE_NAME . '.php';
 
 		// Start output buffering so we could load a template
 		ob_start();
 
 		// Setup post_data for template use
-		setup_postdata( $GLOBALS['post'] =& $post );
+		setup_postdata( $post );
 
 		// Load located templates
 		load_template( apply_filters( 'mentionable_template_location', $template_location, $post ), false );
 
 		// Reset WordPress to default post data
-		wp_reset_postdata();
+		$post = $post->mentionable_host_post;
+		setup_postdata( $post );
 
 		// Return the result to the_content()
 		return ob_get_clean();

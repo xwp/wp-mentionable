@@ -50,7 +50,7 @@ class Test_Mentionable extends WP_UnitTestCase {
 		$this->assertEquals( 1, has_action( 'plugins_loaded', array( $this->plugin, 'define_constants' ) ), 'define_constants action is not defined or has the wrong priority' );
 		$this->assertEquals( 2, has_action( 'plugins_loaded', array( $this->plugin, 'i18n' ) ), 'i18n action is not defined or has the wrong priority' );
 
-		$this->assertEquals( 3, has_action( 'plugins_loaded', array( $this->plugin, 'setup' ) ), 'The setup function is not called' );
+		$this->assertEquals( 3, has_action( 'after_setup_theme', array( $this->plugin, 'setup' ) ), 'The setup function is not called' );
 	}
 
 
@@ -95,10 +95,10 @@ class Test_Mentionable extends WP_UnitTestCase {
 		$this->assertGreaterThan( 0, has_action( 'admin_enqueue_scripts', array( $this->plugin, 'admin_enqueue_scripts' ) ), 'admin_enqueue_scripts action is not defined or has the wrong priority' );
 
 		require_once( MENTIONABLE_INCLUDES_DIR . '/mentionable-settings.php' );
-		$this->settings = new Mentionable_Settings;
+		$this->assertInstanceOf( 'Mentionable_Settings', $this->plugin->settings );
 
 		require_once( MENTIONABLE_INCLUDES_DIR . '/mentionable-postmetas.php' );
-		$this->assertInstanceOf( 'Mentionable_Settings', $this->plugin->settings );
+		$this->assertInstanceOf( 'Mentionable_Postmetas', $this->plugin->postmetas );
 	}
 
 	/**

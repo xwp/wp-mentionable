@@ -33,6 +33,7 @@ class Mentionable_Settings {
 		$defaults = array(
 			'post_types'              => array( 'post' ),
 			'autocomplete_post_types' => array( 'post' ),
+			'load_template'           => false,
 		);
 
 		self::$options = apply_filters(
@@ -106,7 +107,7 @@ class Mentionable_Settings {
 			self::KEY,
 			$section_name,
 			array(
-				'value'       => self::$options[ 'post_types' ],
+				'key'         => 'post_types',
 				'description' => __( 'Post types which this plugin will be activated for.', 'mentionable' ),
 			)
 		);
@@ -118,10 +119,33 @@ class Mentionable_Settings {
 			self::KEY,
 			$section_name,
 			array(
-				'value'          => self::$options[ 'autocomplete_post_types' ],
+				'key'         => 'autocomplete_post_types',
 				'description' => __( 'Post types that auto-completion will match against.', 'mentionable' ),
 			)
 		);
+
+		// Mentionable template
+		$section_name = 'templates';
+
+		add_settings_section(
+			$section_name,
+			__( 'Template', 'mentionable' ),
+			'__return_false',
+			self::KEY
+		);
+
+		add_settings_field(
+			'load_template',
+			__( 'Load custom template', 'mentionable' ),
+			array( $this, 'output_checkbox' ),
+			self::KEY,
+			$section_name,
+			array(
+				'key'         => 'load_template',
+				'description' => __( 'Replace mentionable tag with custom template (Please see wiki before enabling this)', 'mentionable' ),
+			)
+		);
+
 	}
 
 	/**
@@ -137,13 +161,31 @@ class Mentionable_Settings {
 		$names = wp_list_pluck( $wp_post_types, 'label' );
 		$types = array_combine( $slugs, $names );
 		$types = array_diff_key( $types, array_flip( array( 'nav_menu_item', 'revision' ) ) );
-		$value = $args[ 'value' ];
+		$value = self::$options[ $args['key'] ];
 
-		$output = '<select name="mentionable[post_types][]" multiple >';
+		$output = sprintf( '<select name="mentionable[%s][]" multiple >', esc_attr( $args['key'] ) );
 		foreach ( $types as $slug => $name ) {
 			$output .= sprintf( '<option value="%1$s" %3$s>%2$s</option>', $slug, $name, selected( in_array( $slug, $value ), true, false ) );
 		}
 		$output .= '</select>';
+
+		$output .= sprintf(
+			'<p class="description">%s</p>',
+			$args[ 'description' ]
+		);
+
+		echo balanceTags( $output );
+	}
+
+	/**
+	 * Ouput an option checkbox
+	 *
+	 * @param array $args
+	 *
+	 * @return string $output
+	 */
+	public function output_checkbox( $args ) {
+		$output = sprintf( '<input type="checkbox" name="mentionable[%s]" %s>', esc_attr( $args['key'] ), checked( self::$options[ $args['key'] ] ,'on', false ) );
 
 		$output .= sprintf(
 			'<p class="description">%s</p>',

@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2013-11-04 14:34-0500\n"
+"POT-Creation-Date: 2013-11-04 22:31-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -23,34 +23,50 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../includes/mentionable-settings.php:56
 #: ../includes/mentionable-settings.php:57
+#: ../includes/mentionable-settings.php:58
 msgid "Mentionable"
 msgstr "Mentionable"
 
-#: ../includes/mentionable-settings.php:73
+#: ../includes/mentionable-settings.php:74
 msgid "Mentionable Options"
 msgstr "Mentionable | Option du plugin"
 
-#: ../includes/mentionable-settings.php:97
+#: ../includes/mentionable-settings.php:98
 msgid "Post Types"
 msgstr "Type de contenu"
 
-#: ../includes/mentionable-settings.php:104
+#: ../includes/mentionable-settings.php:105
 msgid "Activate for"
 msgstr "Activé pour"
 
-#: ../includes/mentionable-settings.php:110
+#: ../includes/mentionable-settings.php:111
 msgid "Post types which this plugin will be activated for."
 msgstr "Type de contenu pour dans lequel ce plugin sera actif."
 
-#: ../includes/mentionable-settings.php:116
+#: ../includes/mentionable-settings.php:117
 msgid "Autocomplete from"
 msgstr "Saisi semi-automatique de"
 
-#: ../includes/mentionable-settings.php:122
+#: ../includes/mentionable-settings.php:123
 msgid "Post types that auto-completion will match against."
 msgstr "Type de contenu que l'auto-complétion va considérer."
+
+#: ../includes/mentionable-settings.php:132
+msgid "Template"
+msgstr "Gabarit"
+
+#: ../includes/mentionable-settings.php:139
+msgid "Load custom template"
+msgstr "Utilisé le gabarit personnalisé"
+
+#: ../includes/mentionable-settings.php:145
+msgid ""
+"Replace mentionable tag with custom template (Please see wiki before "
+"enabling this)"
+msgstr ""
+"Remplace la balise mentionable par un gabarit personnalisé (SVP ce référer "
+"au wiki avant d'activer cette fonction)"
 
 #: ../tests/test-mentionable.php:81
 msgid "test"

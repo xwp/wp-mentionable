@@ -18,8 +18,8 @@ This plugin brings the power of @mention inside tinyMCE. You can choose where th
 == Installation ==
 
 1. Upload `mentionable` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Optional : create a template called mentionable.php in your theme directory and replace the @mention content with custom template.
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Optional : create a template called mentionable.php in your theme directory and replace the @mention content with custom template.
 
 
 == Screenshots ==

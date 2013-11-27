@@ -17,7 +17,7 @@ This plugin brings the power of @mention inside tinyMCE. You can choose where th
 
 **Development of this plugin is done [on GitHub](https://github.com/x-team/wp-mentionable). Pull requests welcome. Please see [issues](https://github.com/x-team/wp-mentionable/issues) reported there before going to the plugin forum.**
 
-[![Build Status](https://travis-ci.org/x-team/wp-mentionable.png)](https://travis-ci.org/x-team/wp-mentionable)
+[![Build Status](https://travis-ci.org/x-team/wp-mentionable.png)](https://travis-ci.org/x-team/wp-mentionable?branch=master)
 
 ## Installation ##
 

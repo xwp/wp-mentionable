@@ -273,7 +273,7 @@
 					textareaLeft = nodePosition.left;
 				}
 
-				params.list.css( "margin-top", tinymcePosition.top + toolbarPosition.innerHeight() + textareaTop );
+				params.list.css( "margin-top", tinymcePosition.top + toolbarPosition.innerHeight() + textareaTop + 40 );
 				params.list.css( "margin-left", tinymcePosition.left + textareaLeft );
 				params.list.css( "display", "block" );
 				params.visible = true;

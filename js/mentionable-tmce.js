@@ -10,7 +10,7 @@
  */
 /*global tinymce, mentionable, ajaxurl */
 (function ($) {
-	"use strict";
+	'use strict';
 
 	var DOWN_ARROW_KEY = 40;
 	var UP_ARROW_KEY = 38;
@@ -20,7 +20,7 @@
 
 	tinymce.create('tinymce.plugins.mentionable', {
 
-		init: function ( ed, url ) {
+		init: function ( ed ) {
 
 			// All the plugin parameters
 			var params = {
@@ -115,11 +115,11 @@
 			 * @return {String}
 			 */
 			function getCurrentWord( ed ) {
-				var nodeText = ed.selection.getSel().focusNode === null ? "" : ed.selection.getSel().focusNode.nodeValue;
+				var nodeText = ed.selection.getSel().focusNode === null ? '' : ed.selection.getSel().focusNode.nodeValue;
 				var positionInNode = ed.selection.getSel().focusOffset;
 
 				if ( nodeText === null || nodeText.length === 0 || ed.selection.getNode().className === params.nodeClass ) {
-					return "";
+					return '';
 				}
 
 				var lastDelimiter = 0;
@@ -130,7 +130,7 @@
 				}
 
 				var word = nodeText.substr( lastDelimiter, positionInNode - lastDelimiter );
-				var retWord = "";
+				var retWord = '';
 				if ( word.length >= params.minLength > 0 && word.charAt(0).toString() === params.trigger ) {
 					retWord = word.substring(1);
 				}
@@ -219,9 +219,7 @@
 								params.ajax_list = [];
 							}
 						},
-						error: function (jqXHR, textStatus) {
-							// error
-						}
+						error: function () {}
 					});
 				}
 			}
@@ -239,8 +237,8 @@
 			 * @return {Void}
 			 */
 			function displayOptionList( matches, matchedText, ed ) {
-				var matchesList = "";
-				var highlightRegex = new RegExp( "(" + matchedText + ")" );
+				var matchesList = '';
+				var highlightRegex = new RegExp( '(' + matchedText + ')' );
 
 				for (var key in matches) {
 					if ( matches.hasOwnProperty(key) ) {
@@ -254,14 +252,14 @@
 								url +
 								'">' +
 								matches[key]
-										.replace( highlightRegex, "<mark>$1</mark>" ) + '</li>';
+										.replace( highlightRegex, '<mark>$1</mark>' ) + '</li>';
 					}
 				}
 				params.list.html( matchesList );
 
 				// Work out the position of the caret
 				var tinymcePosition = $( ed.getContainer() ).position();
-				var toolbarPosition = $( ed.getContainer() ).find( ".mceToolbar" ).first();
+				var toolbarPosition = $( ed.getContainer() ).find( '.mceToolbar' ).first();
 				var nodePosition = $(ed.selection.getNode()).position();
 				var textareaTop = 0;
 				var textareaLeft = 0;
@@ -269,13 +267,13 @@
 					textareaTop = ed.selection.getRng().getClientRects()[0].top + ed.selection.getRng().getClientRects()[0].height;
 					textareaLeft = ed.selection.getRng().getClientRects()[0].left;
 				} else {
-					textareaTop = parseInt( $( ed.selection.getNode() ).css( "font-size" ), 10 ) * 1.3 + nodePosition.top;
+					textareaTop = parseInt( $( ed.selection.getNode() ).css( 'font-size' ), 10 ) * 1.3 + nodePosition.top;
 					textareaLeft = nodePosition.left;
 				}
 
-				params.list.css( "margin-top", tinymcePosition.top + toolbarPosition.innerHeight() + textareaTop + 40 );
-				params.list.css( "margin-left", tinymcePosition.left + textareaLeft );
-				params.list.css( "display", "block" );
+				params.list.css( 'margin-top', tinymcePosition.top + toolbarPosition.innerHeight() + textareaTop + 40 );
+				params.list.css( 'margin-left', tinymcePosition.left + textareaLeft );
+				params.list.css( 'display', 'block' );
 				params.visible = true;
 
 				optionListEventHandlers( ed );
@@ -287,7 +285,7 @@
 			 * @return {void}
 			 */
 			function hideOptionList() {
-				params.list.css("display", "none");
+				params.list.css('display', 'none');
 				params.visible = false;
 			}
 
@@ -297,13 +295,13 @@
 			 * @return {void}
 			 */
 			function highlightNextOption() {
-				var current = params.list.find( "[data-selected=true]" );
+				var current = params.list.find( '[data-selected=true]' );
 				if ( current.size() === 0 || current.next().size() === 0 ) {
-					params.list.find("li:first-child").attr("data-selected", "true");
+					params.list.find('li:first-child').attr('data-selected', 'true');
 				} else {
-					current.next().attr( "data-selected", "true" );
+					current.next().attr( 'data-selected', 'true' );
 				}
-				current.attr( "data-selected", "false" );
+				current.attr( 'data-selected', 'false' );
 			}
 
 			/**
@@ -312,13 +310,13 @@
 			 * @return {void}
 			 */
 			function highlightPreviousOption() {
-				var current = params.list.find( "[data-selected=true]" );
+				var current = params.list.find( '[data-selected=true]' );
 				if (current.size() === 0 || current.prev().size() === 0) {
-					params.list.find("li:last-child").attr("data-selected", "true");
+					params.list.find('li:last-child').attr('data-selected', 'true');
 				} else {
-					current.prev().attr("data-selected", "true");
+					current.prev().attr('data-selected', 'true');
 				}
-				current.attr("data-selected", "false");
+				current.attr('data-selected', 'false');
 			}
 
 			/**
@@ -329,11 +327,11 @@
 			 * @return {void}
 			 */
 			function optionListEventHandlers( ed ) {
-				params.list.find( "li" ).hover(function () {
-					params.list.find( "[data-selected=true]" ).attr( "data-selected", "false" );
-					$(this).attr( "data-selected", "true" );
+				params.list.find( 'li' ).hover(function () {
+					params.list.find( '[data-selected=true]' ).attr( 'data-selected', 'false' );
+					$(this).attr( 'data-selected', 'true' );
 				});
-				params.list.find( "li" ).click(function () {
+				params.list.find( 'li' ).click(function () {
 					selectOption( ed, getCurrentWord(ed) );
 				});
 			}
@@ -347,14 +345,14 @@
 			 * @returns {void}
 			 */
 			function selectOption( ed, matchedText ) {
-				var $selection = $(params.list).find( "[data-selected=true]" );
+				var $selection = $(params.list).find( '[data-selected=true]' );
 				if ( $selection === null ) {
-					$selection = $(params.list).find( "li:first-child" );
+					$selection = $(params.list).find( 'li:first-child' );
 				}
 
-				var currentValue = $selection.attr( "data-value" );
-				var currentID = $selection.attr( "data-id" );
-				var currentURL = $selection.attr( "data-url" );
+				var currentValue = $selection.attr( 'data-value' );
+				var currentID = $selection.attr( 'data-id' );
+				var currentURL = $selection.attr( 'data-url' );
 
 				// Modify the range to replace overwrite the option text that has already been entered
 				var range = ed.selection.getRng();

@@ -37,6 +37,9 @@ This plugin brings the power of @mention inside tinyMCE. You can choose where th
 
 ## Changelog ##
 
+### 0.2.1 ###
+* Update for 3.9 Compatibility
+
 ### 0.2.0 ###
 * Store reference to mentionable content inside post metas
 * Add the ability to replace the custom content with a template name mentionable.php

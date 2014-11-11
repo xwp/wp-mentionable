@@ -4,8 +4,8 @@
  *
  * Code adapted in part from https://github.com/abrimo/TinyMCE-Autocomplete-Plugin (under MIT licence)
  *
- * @author X-Team <http://x-team.com>
- * @author Jonathan Bardo <jonathan.bardo@x-team.com>
+ * @author XWP <https://xwp.co>
+ * @author Jonathan Bardo (@jonathanbardo)
  * @attribution Adam Brimo <https://github.com/abrimo>
  */
 /*global tinymce, mentionable, ajaxurl */

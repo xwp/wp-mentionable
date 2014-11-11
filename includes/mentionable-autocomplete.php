@@ -2,8 +2,8 @@
 /**
  * Handle the mention autocomplete ajax call
  *
- * @author X-Team <x-team.com>
- * @author Jonathan Bardo <jonathan.bardo@x-team.com>
+ * @author XWP <xwp.co>
+ * @author Jonathan Bardo (@jonathanbardo)
  */
 
 class Mentionable_Autocomplete {

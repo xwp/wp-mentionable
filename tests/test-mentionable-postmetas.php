@@ -2,7 +2,7 @@
 /**
  * Verifies that Mentionable_Postmetas class is working properly
  *
- * @author X-Team <x-team.com>
+ * @author XWP <xwp.co>
  */
 
 class Test_Mentionable_Postmetas extends WP_UnitTestCase {

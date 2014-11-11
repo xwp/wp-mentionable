@@ -8,7 +8,7 @@
  * @version 1.0.0
  * @since 0.1.0
  * @package Mentionable
- * @author X-Team <x-team.com>
+ * @author XWP <xwp.co>
  * @author Topher <topher.derosia@x-team.com>
  */
 

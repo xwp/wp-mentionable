@@ -2,9 +2,9 @@
 /**
  * Verifies main class is working properly.
  *
- * @author X-Team
- * @author Akeda Bagus <akeda@x-team.com>
- * @author Jonathan Bardo <jonathan.bardo@x-team.com>
+ * @author XWP
+ * @author Akeda Bagus <akeda@xwp.co>
+ * @author Jonathan Bardo (@jonathanbardo)
  */
 
 class Test_Mentionable extends WP_UnitTestCase {

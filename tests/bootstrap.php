@@ -2,8 +2,8 @@
 /**
  * Tests bootstrapper
  *
- * @author X-Team <x-team.com>
- * @author Jonathan Bardo <jonathan.bardo@x-team.com>
+ * @author XWP <xwp.co>
+ * @author Jonathan Bardo (@jonathanbardo)
  */
 
 require_once getenv( 'WP_TESTS_DIR' ) . '/includes/functions.php';

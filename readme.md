@@ -4,20 +4,20 @@
 ![Banner](assets/banner-1544x500.png)
 Mention WordPress content with inline autocomplete inside tinyMCE.
 
-**Contributors:** [x-team](http://profiles.wordpress.org/x-team), [jonathanbardo](http://profiles.wordpress.org/jonathanbardo), [topher1kenobe](http://profiles.wordpress.org/topher1kenobe), [shadyvb](http://profiles.wordpress.org/shadyvb), [westonruter](http://profiles.wordpress.org/westonruter)  
+**Contributors:** [xwp](http://profiles.wordpress.org/xwp), [jonathanbardo](http://profiles.wordpress.org/jonathanbardo), [topher1kenobe](http://profiles.wordpress.org/topher1kenobe), [shadyvb](http://profiles.wordpress.org/shadyvb), [westonruter](http://profiles.wordpress.org/westonruter)  
 **Tags:** [tinyMCE](http://wordpress.org/plugins/tags/tinyMCE), [admin](http://wordpress.org/plugins/tags/admin), [mention](http://wordpress.org/plugins/tags/mention)  
 **Requires at least:** 3.6  
 **Tested up to:** 3.7.1  
 **Stable tag:** trunk (master)  
 **License:** [GPLv2 or later](http://www.gnu.org/licenses/gpl-2.0.html)  
 
+[![Build Status](https://travis-ci.org/xwp/wp-mentionable.png?branch=master)](https://travis-ci.org/xwp/wp-mentionable) 
+
 ## Description ##
 
 This plugin brings the power of @mention inside tinyMCE. You can choose where the autocompletion gets his information from and on which custom post type this plugin is activated on. You can also create custom template replacement on the front-end based on your need.
 
-**Development of this plugin is done [on GitHub](https://github.com/x-team/wp-mentionable). Pull requests welcome. Please see [issues](https://github.com/x-team/wp-mentionable/issues) reported there before going to the plugin forum.**
-
-[![Build Status](https://travis-ci.org/x-team/wp-mentionable.png)](https://travis-ci.org/x-team/wp-mentionable?branch=master)
+**Development of this plugin is done [on GitHub](https://github.com/xwp/wp-mentionable). Pull requests welcome. Please see [issues](https://github.com/xwp/wp-mentionable/issues) reported there before going to the plugin forum.**
 
 ## Installation ##
 
